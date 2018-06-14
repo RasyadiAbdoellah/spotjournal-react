@@ -1,31 +1,35 @@
 import React, { Component } from 'react';
 import './App.css';
 import Credentials from './containers/credentialsContainer';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
+import config from './config';
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      clickCounter: 0
+      token:''
     }
   }
-  stateHook = () => {
-    let counter = this.state.clickCounter
-    counter++
-    this.setState({
-      clickCounter: counter
-    })
+
+  submitCredentials = (credentials) => {
+    console.log(credentials)
+    axios.post(config.apiOrigin + '/sign-in', credentials)
+    .then(res => console.log('response is:', res))
+    .catch(error => console.log('error is:', error))
   }
   
   render() {
-    const count = this.state.clickCounter
 
     return (
       <div className="App">
-        <Credentials onClick={this.stateHook} number={count}/>
+        <Credentials submitCredentials={this.submitCredentials}/>
       </div>
     )
   }
 }
 
-export default App;
+const AppWithRouter = withRouter(App)
+
+export default AppWithRouter;
