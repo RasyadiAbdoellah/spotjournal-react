@@ -3,19 +3,10 @@ import React, { Component } from 'react';
 class Register extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      passwordConfirm: ''
-    }
   }
 
   onInputChange = e => {
     this.props.handleUserInput(e)
-  }
-
-  onPassConfirmChange = e => {
-    const value = e.target.value
-    this.setState({passwordConfirm: value})
-    this.props.user.password == value ? console.log('passwords match') : console.log('passwords do not match')
   }
 
   render() {
@@ -33,7 +24,7 @@ class Register extends Component {
       </label>
       <label>
         Confirm Password:
-        <input id="confirm-password" type="password" value={this.state.passwordConfirm} onChange={this.onPassConfirmChange}/>
+        <input id="passwordConfirm" type="password" value={this.props.user.passwordConfirm} onChange={this.onInputChange}/>
       </label>
       <input value="Submit" type="submit"/>
       </form>

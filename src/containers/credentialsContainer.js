@@ -12,7 +12,8 @@ class CredentialsContainer extends Component {
     this.state = {
       credentials:{
         email:'',
-        password:''
+        password:'',
+        passwordConfirm:'', 
       },
       visualFlags: {
         credentialSwitch: true
@@ -21,23 +22,55 @@ class CredentialsContainer extends Component {
     }
   }
 
+
+  // submitCredentials changes its URL depending on which form is visible. This feels hacky, and theres a better way to this propbably, but it'll do for now.
   submitCredentials = () => {
     // object has to be built in http req as state has visual flags
-    const dataPack = {
-      credentials: this.state.credentials
-    }
+    let dataPack
     
-    console.log(dataPack)
+    if(this.state.visualFlags.credentialSwitch){
+      dataPack = {
+        credentials: {
+          email: this.state.credentials.email,
+          password: this.state.credentials.password
+        }
+      }
 
-    axios.post(config.apiOrigin + '/sign-in', dataPack)
-    .then(res => console.log('response is:', res))
-    .catch(error => console.log('error is:', error))
+      axios.post(config.apiOrigin + '/sign-in', dataPack)
+      .then(res => console.log('response is:', res))
+      .catch(error => console.log('error is:', error))
+
+    } else {
+
+      dataPack = {
+        credentials: {
+          email: this.state.credentials.email,
+          password: this.state.credentials.password,
+          password_confirmation: this.state.credentials.passwordConfirm
+        }
+      }
+
+      axios.post(config.apiOrigin + '/sign-up', dataPack)
+      .then(res => console.log('response is:', res))
+      .catch(error => console.log('error is:', error))
+    }
   }
+
+  //small function that returns boolean val depending on whether passwords match. Called inside of onSubmit
+  passwordCompare = () => this.state.credentials.password == this.state.credentials.passwordConfirm ? true : false;
+
+
 
   onSubmit = (e) => {
+    console.log(e)
     e.preventDefault()
-    this.submitCredentials()
+    if(this.state.visualFlags.credentialSwitch || (this.passwordCompare() && !this.state.visualFlags.credentialSwitch)){
+      this.submitCredentials()
+    } else {
+      console.log('error')
+    }
   }
+
 
   handleUserInput = (e) => {
     const values = this.state.credentials
@@ -47,15 +80,15 @@ class CredentialsContainer extends Component {
     this.setState({credentials:values})
   }
 
+
   switchHandler = e => {
     const propName = e.target.id
-    console.log('this.switchHandler is called')
     this.setState({visualFlags: {[propName] : !this.state.visualFlags[propName] }})
   }
 
   render() {
-
-    let toggledCredentialComponent = <LoginForm user={this.state.credentials} handleUserInput={this.handleUserInput} onSubmit={this.onSubmit}/>
+    // define local fragment
+    let toggledCredentialComponent
 
     this.state.visualFlags.credentialSwitch ? toggledCredentialComponent = <LoginForm user={this.state.credentials} handleUserInput={this.handleUserInput} onSubmit={this.onSubmit}/> : toggledCredentialComponent = <RegisterForm user={this.state.credentials} handleUserInput={this.handleUserInput} onSubmit={this.onSubmit}/>
     
