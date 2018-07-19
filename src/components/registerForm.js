@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 
-class Login extends Component {
+class Register extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      passwordConfirm: ''
+    }
   }
 
   onInputChange = e => {
     this.props.handleUserInput(e)
+  }
+
+  onPassConfirmChange = e => {
+    const value = e.target.value
+    this.setState({passwordConfirm: value})
+    this.props.user.password == value ? console.log('passwords match') : console.log('passwords do not match')
   }
 
   render() {
@@ -22,10 +31,14 @@ class Login extends Component {
         Password:
         <input id="password" type="password" value={this.props.user.password} onChange={this.onInputChange}/>
       </label>
+      <label>
+        Confirm Password:
+        <input id="confirm-password" type="password" value={this.state.passwordConfirm} onChange={this.onPassConfirmChange}/>
+      </label>
       <input value="Submit" type="submit"/>
       </form>
     )
   }
 }
 
-export default Login
+export default Register
