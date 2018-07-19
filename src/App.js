@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Route, Switch } from 'react-router-dom';
 import Credentials from './containers/credentialsContainer';
-import { withRouter } from 'react-router-dom';
+import Dashboard from './containers/dashboard'
 
 
 class App extends Component {
@@ -12,18 +13,22 @@ class App extends Component {
     }
   }
 
-  
+  storeToken = (token) => {
+    this.setState({ token })
+  }
   
   render() {
 
     return (
       <div className="App">
-        <Credentials token={this.state.token}/>
+        <Switch>
+          <Route exact path="/" render={ (props) => <Credentials token={this.state} storeToken={this.storeToken}/> }/>
+          <Route path="/dashboard" component={Dashboard} />
+        </Switch> 
       </div>
     )
   }
 }
 
-const AppWithRouter = withRouter(App)
 
-export default AppWithRouter;
+export default App;
