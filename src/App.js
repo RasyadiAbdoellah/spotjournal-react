@@ -9,11 +9,12 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-      token:''
+      token:'',
+      isLoggedIn: false
     }
   }
 
-  storeToken = (token) => {
+  loginHandler = (token) => {
     this.setState({ token })
   }
   
@@ -22,7 +23,7 @@ class App extends Component {
     return (
       <div className="App">
         <Switch>
-          <Route exact path="/" render={ (props) => <Credentials token={this.state} storeToken={this.storeToken}/> }/>
+          <Route exact path="/" render={ (props) => <Credentials token={this.state.token} isLoggedin={this.state.isLoggedIn} loginHandler={this.loginHandler}/> }/>
           <Route path="/dashboard" component={Dashboard} />
         </Switch> 
       </div>

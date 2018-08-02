@@ -17,8 +17,7 @@ class CredentialsContainer extends Component {
       },
       visualFlags: {
         credentialSwitch: true
-      },
-      isLoggedIn: false
+      }
      
     }
   }
@@ -40,9 +39,7 @@ class CredentialsContainer extends Component {
       axios.post(config.apiOrigin + '/sign-in', dataPack)
       .then(res => {
         console.log('response is:', res)
-        this.props.storeToken(res.data.user.token)
-      }).then( () => {
-        this.setState({ isLoggedIn : true})
+        this.props.loginHandler(res.data.user.token)
       })
       .catch(error => console.log('error is:', error))
 
@@ -101,7 +98,7 @@ class CredentialsContainer extends Component {
 
     this.state.visualFlags.credentialSwitch ? toggledCredentialComponent = <LoginForm user={this.state.credentials} handleUserInput={this.handleUserInput} onSubmit={this.onSubmit}/> : toggledCredentialComponent = <RegisterForm user={this.state.credentials} handleUserInput={this.handleUserInput} onSubmit={this.onSubmit}/>
 
-    if(this.state.isLoggedIn && this.props.token.length != 0){
+    if(this.props.isLoggedIn && this.props.token.length != 0){
       return(
         <Redirect to="/dashboard" />
       )
