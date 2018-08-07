@@ -14,8 +14,11 @@ class App extends Component {
     }
   }
 
+// loginHandler is a state updater. There is no error checking here, and it assumes that the token is valid.
   loginHandler = (token) => {
-    this.setState({ token })
+    if(token.length !== 0){
+      this.setState({ token, isLoggedIn: true })
+    }
   }
   
   render() {
@@ -23,8 +26,8 @@ class App extends Component {
     return (
       <div className="App">
         <Switch>
-          <Route exact path="/" render={ (props) => <Credentials token={this.state.token} isLoggedin={this.state.isLoggedIn} loginHandler={this.loginHandler}/> }/>
-          <Route path="/dashboard" component={Dashboard} />
+          <Route exact path="/" render={ (props) => <Credentials token={this.state.token} isLoggedIn={this.state.isLoggedIn} loginHandler={this.loginHandler}/> }/>
+          <Route path="/dashboard" render={ (props) => <Dashboard token={this.state.token}/> } />
         </Switch> 
       </div>
     )

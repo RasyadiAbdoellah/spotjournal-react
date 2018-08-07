@@ -16,6 +16,7 @@ class CredentialsContainer extends Component {
         passwordConfirm:'', 
       },
       visualFlags: {
+        //credentialSwitch == sign in. !credentialSwitch == sign up.
         credentialSwitch: true
       }
      
@@ -54,16 +55,18 @@ class CredentialsContainer extends Component {
       }
 
       axios.post(config.apiOrigin + '/sign-up', dataPack)
-      .then(res => console.log('response is:', res))
+      .then(res => {
+        console.log('response is:', res)
+        this.props.loginHandler(res.data.user.token)
+      })
       .catch(error => console.log('error is:', error))
     }
   }
 
   //small function that returns boolean val depending on whether passwords match. Called inside of onSubmit
-  passwordCompare = () => this.state.credentials.password == this.state.credentials.passwordConfirm ? true : false;
+  passwordCompare = () => this.state.credentials.password === this.state.credentials.passwordConfirm ? true : false;
 
-
-
+  //onSubmit is an eventHandler that calls the function only if current form is sign-in OR current form is sign-up and passwords match.
   onSubmit = (e) => {
     console.log(e)
     e.preventDefault()
@@ -98,7 +101,10 @@ class CredentialsContainer extends Component {
 
     this.state.visualFlags.credentialSwitch ? toggledCredentialComponent = <LoginForm user={this.state.credentials} handleUserInput={this.handleUserInput} onSubmit={this.onSubmit}/> : toggledCredentialComponent = <RegisterForm user={this.state.credentials} handleUserInput={this.handleUserInput} onSubmit={this.onSubmit}/>
 
-    if(this.props.isLoggedIn && this.props.token.length != 0){
+    console.log('isLoggedIn is:', this.props.isLoggedIn)
+    console.log('token is:', this.props.token)
+
+    if(this.props.isLoggedIn && this.props.token.length !== 0){
       return(
         <Redirect to="/dashboard" />
       )
