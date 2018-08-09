@@ -4,9 +4,13 @@ import React, { Component } from 'react';
 class Dashboard extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+
+        }
     }
 
     render() {
+        console.log("token is:" , this.props.token)
         return(
             <div>
                 <p> This is the Dashboard</p>
@@ -18,7 +22,7 @@ class Dashboard extends Component {
                     Dashboard
                     |       |   
             placeForm (C)   |
-                        PlacesList <- Will need a function to handle live updating data
+                        PlacesList <- functions as a container. functionality includes live updating data
                             |-PlaceListItem <-has delete button that sends a destroy req
                                 |
                             placeForm (U)

@@ -1,4 +1,4 @@
-'use strict'
+
 
 const addNestedValue = function (pojo, name, value) {
   const recurse = function recurse (pojo, keys, value) {

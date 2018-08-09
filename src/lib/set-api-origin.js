@@ -1,4 +1,4 @@
-'use strict'
+
 
 const parseNestedQuery = require('./parse-nested-query')
 

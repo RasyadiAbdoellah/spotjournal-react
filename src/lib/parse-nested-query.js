@@ -1,4 +1,4 @@
-'use strict'
+
 
 const addNestedValue = require('./add-nested-value')
 
